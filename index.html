@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Follower Tracker - Educational Analytics Tool</title>
+    <meta name="description" content="A comprehensive tool for educators to track and analyze students' social media engagement across multiple platforms.">
+    <meta name="keywords" content="social media, analytics, education, follower tracking, statistics">
+    <meta name="author" content="Educational Technology Tools">
+    
+    <!-- Open Graph Meta Tags for better sharing -->
+    <meta property="og:title" content="Social Media Follower Tracker">
+    <meta property="og:description" content="Track and analyze student social media engagement with comprehensive statistics and export features.">
+    <meta property="og:type" content="website">
+    
+    <style>
+        /* ==========================================================================
+           Base Styles & Reset
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           Layout Components
+           ========================================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e1e8ff;
+        }
+
+        .input-section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .student-input {
+            margin-bottom: 20px;
+        }
+
+        .student-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .student-input input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .student-input input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .social-inputs {
+            display: grid;
+            gap: 15px;
+        }
+
+        .social-input {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .social-input:hover {
+            border-color: #cbd5e0;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .facebook { background: #1877f2; }
+        .youtube { background: #ff0000; }
+        .instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+        .tiktok { background: #000000; }
+
+        .social-input input[type="url"] {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .follower-input {
+            width: 120px;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .follower-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* ==========================================================================
+           Interactive Elements
+           ========================================================================== */
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:focus {
+            outline: 2px solid #4facfe;
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        .leaderboard {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e1e8ff;
+        }
+
+        .analytics-section {
+            background: #f0f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #bfdbfe;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .control-group select, .control-group input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-export {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #059669;
+        }
+
+        .btn-reset {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #4b5563;
+        }
+
+        .platform-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .filter-chip.active {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            color: white;
+        }
+
+        .filter-chip:hover {
+            border-color: #9ca3af;
+        }
+
+        .leaderboard h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .student-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 5px solid #4facfe;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .total-followers {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #4facfe;
+        }
+
+        .social-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .social-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 6px;
+        }
+
+        .social-stat .icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #744210;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .student-card {
+            position: relative;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #a0aec0;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .current-total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .current-total h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .current-total .total {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .social-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .social-input {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .social-input input[type="url"] {
+                order: 1;
+            }
+
+            .follower-input {
+                order: 2;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Social Media Follower Tracker</h1>
+            <p>Track and rank your students' social media engagement</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2>📝 Add Student Data</h2>
+                
+                <div class="student-input">
+                    <label for="studentName">Student/Creator Name:</label>
+                    <input type="text" id="studentName" placeholder="Enter student name">
+                </div>
+
+                <div class="social-inputs">
+                    <div class="social-input">
+                        <div class="social-icon facebook">FB</div>
+                        <input type="url" id="facebook" placeholder="Facebook profile URL (optional)">
+                        <input type="number" id="facebookCount" placeholder="Followers" min="0" class="follower-input">
+                    </div>
+
+                    <div class="social-input">
+                        <div class="social-icon youtube">YT</div>
+                        <input type="url" id="youtube" placeholder="YouTube channel URL (optional)">
+                        <input type="number" id="youtubeCount" placeholder="Subscribers" min="0" class="follower-input">
+                    </div>
+
+                    <div class="social-input">
+                        <div class="social-icon instagram">IG</div>
+                        <input type="url" id="instagram" placeholder="Instagram profile URL (optional)">
+                        <input type="number" id="instagramCount" placeholder="Followers" min="0" class="follower-input">
+                    </div>
+
+                    <div class="social-input">
+                        <div class="social-icon tiktok">TT</div>
+                        <input type="url" id="tiktok" placeholder="TikTok profile URL (optional)">
+                        <input type="number" id="tiktokCount" placeholder="Followers" min="0" class="follower-input">
+                    </div>
+                </div>
+
+                <div class="current-total">
+                    <h3>Current Total Followers</h3>
+                    <div class="total" id="currentTotal">0</div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="saveStudent()">💾 Save Student</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">🔄 Clear Form</button>
+                </div>
+            </div>
+
+            <div class="leaderboard">
+                <div class="analytics-section">
+                    <h2>📊 Statistical Analysis</h2>
+                    <div class="stats-grid" id="statsGrid">
+                        <!-- Statistics will be populated here -->
+                    </div>
+                </div>
+
+                <div class="controls-section">
+                    <div class="control-group">
+                        <label>Sort By</label>
+                        <select id="sortBy">
+                            <option value="totalFollowers">Total Followers</option>
+                            <option value="surname">Surname (A-Z)</option>
+                            <option value="surname-desc">Surname (Z-A)</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="tiktok">TikTok</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Filter by Platform</label>
+                        <div class="platform-filter">
+                            <div class="filter-chip active" data-platform="all">All</div>
+                            <div class="filter-chip" data-platform="facebook">Facebook</div>
+                            <div class="filter-chip" data-platform="youtube">YouTube</div>
+                            <div class="filter-chip" data-platform="instagram">Instagram</div>
+                            <div class="filter-chip" data-platform="tiktok">TikTok</div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Min Followers</label>
+                        <input type="number" id="minFollowers" placeholder="0" min="0">
+                    </div>
+
+                    <div class="export-buttons">
+                        <button class="btn-small btn-export" onclick="exportToCSV()">📄 Export CSV</button>
+                        <button class="btn-small btn-export" onclick="exportToJSON()">📋 Export JSON</button>
+                        <button class="btn-small btn-reset" onclick="resetFilters()">🔄 Reset</button>
+                    </div>
+                </div>
+
+                <h2>🏆 Student Leaderboard</h2>
+                <div id="leaderboardContent">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <h3>No students added yet</h3>
+                        <p>Add your first student to see the leaderboard!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Social Media Follower Tracker
+         * Educational analytics tool for tracking student social media engagement
+         * 
+         * Features:
+         * - Student data management with local storage
+         * - Statistical analysis and visualization
+         * - Advanced filtering and sorting
+         * - Data export (CSV/JSON)
+         * - Responsive design
+         */
+
+        // ==========================================================================
+        // Global State Management
+        // ==========================================================================
+        let students = JSON.parse(localStorage.getItem('socialMediaStudents')) || [];
+        let currentFilters = {
+            platform: 'all',
+            minFollowers: 0,
+            sortBy: 'totalFollowers'
+        };
+
+        // Performance optimization: Debounce function for input events
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // ==========================================================================
+        // Core Functions
+        // ==========================================================================
+        
+        /**
+         * Updates the current total follower count in real-time
+         * Validates input and handles edge cases
+         */
+        function updateCurrentTotal() {
+            try {
+                const facebookCount = Math.max(0, parseInt(document.getElementById('facebookCount').value) || 0);
+                const youtubeCount = Math.max(0, parseInt(document.getElementById('youtubeCount').value) || 0);
+                const instagramCount = Math.max(0, parseInt(document.getElementById('instagramCount').value) || 0);
+                const tiktokCount = Math.max(0, parseInt(document.getElementById('tiktokCount').value) || 0);
+                
+                const total = facebookCount + youtubeCount + instagramCount + tiktokCount;
+                const totalElement = document.getElementById('currentTotal');
+                if (totalElement) {
+                    totalElement.textContent = total.toLocaleString();
+                }
+            } catch (error) {
+                console.error('Error updating current total:', error);
+            }
+        }
+
+        // ==========================================================================
+        // Event Listeners & Initialization
+        // ==========================================================================
+        
+        // Optimized event listeners with debouncing for better performance
+        const debouncedUpdateTotal = debounce(updateCurrentTotal, 300);
+        
+        ['facebookCount', 'youtubeCount', 'instagramCount', 'tiktokCount'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('input', debouncedUpdateTotal);
+                // Add accessibility improvements
+                element.setAttribute('aria-label', `Enter ${id.replace('Count', '')} follower count`);
+            }
+        });
+
+        /**
+         * Validates and saves a new student record
+         * Includes input sanitization and error handling
+         */
+        function saveStudent() {
+            try {
+                // Input validation and sanitization
+                const nameInput = document.getElementById('studentName');
+                const name = nameInput.value.trim();
+                
+                if (!name || name.length < 2) {
+                    alert('Please enter a valid student name (at least 2 characters)!');
+                    nameInput.focus();
+                    return;
+                }
+
+                // Sanitize name input (remove potentially harmful characters)
+                const sanitizedName = name.replace(/[<>\"'&]/g, '');
+                if (sanitizedName !== name) {
+                    alert('Name contains invalid characters. Please use only letters, numbers, and basic punctuation.');
+                    return;
+                }
+                
+                // Validate follower counts
+                const facebookCount = Math.max(0, parseInt(document.getElementById('facebookCount').value) || 0);
+                const youtubeCount = Math.max(0, parseInt(document.getElementById('youtubeCount').value) || 0);
+                const instagramCount = Math.max(0, parseInt(document.getElementById('instagramCount').value) || 0);
+                const tiktokCount = Math.max(0, parseInt(document.getElementById('tiktokCount').value) || 0);
+                
+                const totalFollowers = facebookCount + youtubeCount + instagramCount + tiktokCount;
+                
+                if (totalFollowers === 0) {
+                    alert('Please enter at least one follower count!');
+                    return;
+                }
+
+                // Check for duplicate names
+                const existingStudent = students.find(s => s.name.toLowerCase() === sanitizedName.toLowerCase());
+                if (existingStudent) {
+                    if (!confirm(`A student named "${sanitizedName}" already exists. Do you want to add another entry?`)) {
+                        return;
+                    }
+                }
+                
+                const student = {
+                    id: Date.now(), // Add unique ID for better data management
+                    name: sanitizedName,
+                    followers: {
+                        facebook: facebookCount,
+                        youtube: youtubeCount,
+                        instagram: instagramCount,
+                        tiktok: tiktokCount
+                    },
+                    totalFollowers: totalFollowers,
+                    dateAdded: new Date().toISOString()
+                };
+                
+                students.push(student);
+                
+                // Safe localStorage operation with error handling
+                try {
+                    localStorage.setItem('socialMediaStudents', JSON.stringify(students));
+                } catch (storageError) {
+                    console.error('Failed to save to localStorage:', storageError);
+                    alert('Warning: Data could not be saved locally. Your data may be lost when you refresh the page.');
+                }
+                
+                updateLeaderboard();
+                clearForm();
+                
+                // Success feedback
+                alert(`✅ ${sanitizedName} has been added with ${totalFollowers.toLocaleString()} total followers!`);
+                
+            } catch (error) {
+                console.error('Error saving student:', error);
+                alert('An error occurred while saving the student data. Please try again.');
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('studentName').value = '';
+            ['facebook', 'youtube', 'instagram', 'tiktok'].forEach(platform => {
+                document.getElementById(platform).value = '';
+                document.getElementById(platform + 'Count').value = '';
+            });
+            
+            document.getElementById('currentTotal').textContent = '0';
+        }
+
+        function calculateStatistics(studentList) {
+            if (studentList.length === 0) return null;
+
+            const totalFollowers = studentList.map(s => s.totalFollowers);
+            const facebookFollowers = studentList.map(s => s.followers.facebook);
+            const youtubeFollowers = studentList.map(s => s.followers.youtube);
+            const instagramFollowers = studentList.map(s => s.followers.instagram);
+            const tiktokFollowers = studentList.map(s => s.followers.tiktok);
+
+            const sum = arr => arr.reduce((a, b) => a + b, 0);
+            const avg = arr => sum(arr) / arr.length;
+            const median = arr => {
+                const sorted = [...arr].sort((a, b) => a - b);
+                const mid = Math.floor(sorted.length / 2);
+                return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+            };
+
+            return {
+                totalStudents: studentList.length,
+                totalFollowersSum: sum(totalFollowers),
+                avgTotalFollowers: Math.round(avg(totalFollowers)),
+                medianTotalFollowers: Math.round(median(totalFollowers)),
+                maxFollowers: Math.max(...totalFollowers),
+                minFollowers: Math.min(...totalFollowers),
+                avgFacebook: Math.round(avg(facebookFollowers)),
+                avgYoutube: Math.round(avg(youtubeFollowers)),
+                avgInstagram: Math.round(avg(instagramFollowers)),
+                avgTiktok: Math.round(avg(tiktokFollowers))
+            };
+        }
+
+        function updateStatistics(studentList) {
+            const stats = calculateStatistics(studentList);
+            const statsGrid = document.getElementById('statsGrid');
+
+            if (!stats) {
+                statsGrid.innerHTML = '<p style="text-align: center; color: #6b7280;">No data available for analysis</p>';
+                return;
+            }
+
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${stats.totalStudents}</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.totalFollowersSum.toLocaleString()}</div>
+                    <div class="stat-label">Total Followers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.avgTotalFollowers.toLocaleString()}</div>
+                    <div class="stat-label">Average Followers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.medianTotalFollowers.toLocaleString()}</div>
+                    <div class="stat-label">Median Followers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.maxFollowers.toLocaleString()}</div>
+                    <div class="stat-label">Highest Count</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.avgFacebook.toLocaleString()}</div>
+                    <div class="stat-label">Avg Facebook</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.avgYoutube.toLocaleString()}</div>
+                    <div class="stat-label">Avg YouTube</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.avgInstagram.toLocaleString()}</div>
+                    <div class="stat-label">Avg Instagram</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.avgTiktok.toLocaleString()}</div>
+                    <div class="stat-label">Avg TikTok</div>
+                </div>
+            `;
+        }
+
+        function getSurname(fullName) {
+            const parts = fullName.trim().split(' ');
+            return parts.length > 1 ? parts[parts.length - 1] : parts[0];
+        }
+
+        function filterAndSortStudents() {
+            let filteredStudents = [...students];
+
+            // Apply platform filter
+            if (currentFilters.platform !== 'all') {
+                filteredStudents = filteredStudents.filter(student => 
+                    student.followers[currentFilters.platform] > 0
+                );
+            }
+
+            // Apply minimum followers filter
+            if (currentFilters.minFollowers > 0) {
+                filteredStudents = filteredStudents.filter(student => 
+                    student.totalFollowers >= currentFilters.minFollowers
+                );
+            }
+
+            // Apply sorting
+            filteredStudents.sort((a, b) => {
+                switch (currentFilters.sortBy) {
+                    case 'surname':
+                        return getSurname(a.name).localeCompare(getSurname(b.name));
+                    case 'surname-desc':
+                        return getSurname(b.name).localeCompare(getSurname(a.name));
+                    case 'facebook':
+                        return b.followers.facebook - a.followers.facebook;
+                    case 'youtube':
+                        return b.followers.youtube - a.followers.youtube;
+                    case 'instagram':
+                        return b.followers.instagram - a.followers.instagram;
+                    case 'tiktok':
+                        return b.followers.tiktok - a.followers.tiktok;
+                    default:
+                        return b.totalFollowers - a.totalFollowers;
+                }
+            });
+
+            return filteredStudents;
+        }
+
+        function updateLeaderboard() {
+            const filteredStudents = filterAndSortStudents();
+            const leaderboardContent = document.getElementById('leaderboardContent');
+            
+            updateStatistics(filteredStudents);
+            
+            if (filteredStudents.length === 0) {
+                leaderboardContent.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <h3>No students match current filters</h3>
+                        <p>Try adjusting your filters or add more students!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            leaderboardContent.innerHTML = filteredStudents.map((student, index) => `
+                <div class="student-card">
+                    <div class="rank-badge">${index + 1}</div>
+                    <div class="student-header">
+                        <div class="student-name">${student.name}</div>
+                        <div class="total-followers">${student.totalFollowers.toLocaleString()}</div>
+                    </div>
+                    <div class="social-breakdown">
+                        <div class="social-stat">
+                            <div class="icon facebook">FB</div>
+                            <span>${student.followers.facebook.toLocaleString()}</span>
+                        </div>
+                        <div class="social-stat">
+                            <div class="icon youtube">YT</div>
+                            <span>${student.followers.youtube.toLocaleString()}</span>
+                        </div>
+                        <div class="social-stat">
+                            <div class="icon instagram">IG</div>
+                            <span>${student.followers.instagram.toLocaleString()}</span>
+                        </div>
+                        <div class="social-stat">
+                            <div class="icon tiktok">TT</div>
+                            <span>${student.followers.tiktok.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function exportToCSV() {
+            const filteredStudents = filterAndSortStudents();
+            if (filteredStudents.length === 0) {
+                alert('No data to export!');
+                return;
+            }
+
+            const headers = ['Name', 'Surname', 'Total Followers', 'Facebook', 'YouTube', 'Instagram', 'TikTok', 'Date Added'];
+            const csvContent = [
+                headers.join(','),
+                ...filteredStudents.map(student => [
+                    `"${student.name}"`,
+                    `"${getSurname(student.name)}"`,
+                    student.totalFollowers,
+                    student.followers.facebook,
+                    student.followers.youtube,
+                    student.followers.instagram,
+                    student.followers.tiktok,
+                    `"${new Date(student.dateAdded).toLocaleDateString()}"`
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `social_media_followers_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function exportToJSON() {
+            const filteredStudents = filterAndSortStudents();
+            if (filteredStudents.length === 0) {
+                alert('No data to export!');
+                return;
+            }
+
+            const exportData = {
+                exportDate: new Date().toISOString(),
+                totalStudents: filteredStudents.length,
+                statistics: calculateStatistics(filteredStudents),
+                students: filteredStudents
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `social_media_data_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function resetFilters() {
+            currentFilters = {
+                platform: 'all',
+                minFollowers: 0,
+                sortBy: 'totalFollowers'
+            };
+            
+            document.getElementById('sortBy').value = 'totalFollowers';
+            document.getElementById('minFollowers').value = '';
+            
+            // Reset platform filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            document.querySelector('[data-platform="all"]').classList.add('active');
+            
+            updateLeaderboard();
+        }
+
+        // Event listeners for filters and controls
+        document.getElementById('sortBy').addEventListener('change', function() {
+            currentFilters.sortBy = this.value;
+            updateLeaderboard();
+        });
+
+        document.getElementById('minFollowers').addEventListener('input', function() {
+            currentFilters.minFollowers = parseInt(this.value) || 0;
+            updateLeaderboard();
+        });
+
+        // Platform filter chips
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentFilters.platform = this.dataset.platform;
+                updateLeaderboard();
+            });
+        });
+
+        // Initialize the leaderboard on page load
+        updateLeaderboard();
+
+        // Add keyboard shortcuts for better UX
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveStudent();
+            }
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                exportToCSV();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971e4877d2028bc7',t:'MTc1NTY1NTA3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
